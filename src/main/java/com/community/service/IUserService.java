@@ -9,6 +9,7 @@ public interface IUserService extends IService<User> {
 
     /**
      * 根据id查询User
+     *
      * @param id
      * @return
      */
@@ -16,8 +17,17 @@ public interface IUserService extends IService<User> {
 
     /**
      * 注册新用户
+     *
      * @param user
      * @return
      */
-    Map<String,Object> register(User user);
+    Map<String, Object> register(User user);
+
+    /**
+     * 激活账号
+     * @param userId
+     * @param activtionCode
+     * @return
+     */
+    int activtion(int userId, String activtionCode);
 }

@@ -10,12 +10,15 @@ import com.community.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import com.community.util.ActivationStatus;
+
 
 @Service
 public class UserService extends ServiceImpl<UserMapper, User> implements IUserService {
@@ -51,6 +54,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
      * @return
      */
     @Override
+    @Transactional
     public Map<String, Object> register(User user) {
         Map<String,Object> map=new HashMap<>();
         //唯一性校验
@@ -70,6 +74,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         user.setType(0);
         user.setStatus(0);
         user.setActivationCode(CommonUtil.generateUUID());
+        user.setHeaderUrl(String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt(1000)));
         user.setCreateTime(new Date());
         this.baseMapper.insert(user);
         //激活邮件
@@ -81,4 +86,29 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         mailClient.sendMail(user.getEmail(),"请激活您的账号",templateEngine.process("/mail/activation",context));
         return map;
     }
+
+    /**
+     * 激活账号
+     * @param userId
+     * @param activtionCode
+     * @return
+     */
+    @Override
+    public int activtion(int userId, String activtionCode) {
+        User user=this.selectUserById(userId);
+        if(user==null){
+            return ActivationStatus.USER_NOTEXIST;
+        }else {
+            if(user.getStatus()==1){
+                return ActivationStatus.ACTIVATION_REPEAT;
+            }else if(user.getActivationCode().equals(activtionCode)){
+                this.update(user,new EntityWrapper<User>().eq("status",1));
+                return ActivationStatus.ACTIVATION_SUCCESS;
+            }else {
+                return ActivationStatus.ACTIVATION_FAILURE;
+            }
+        }
+    }
+
+
 }
