@@ -2,6 +2,7 @@ package com.community.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.community.vo.LoginTicket;
+import com.community.vo.User;
 
 import java.util.Map;
 
@@ -28,4 +29,11 @@ public interface ILoginTicketService extends IService<LoginTicket> {
      * @return
      */
     void updateLoginTicketStatus(String ticket);
+
+    /**
+     * 根据ticket获取LT
+     * @param ticket
+     * @return
+     */
+    LoginTicket selectLoginTicketByTicket(String ticket);
 }

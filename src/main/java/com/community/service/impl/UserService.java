@@ -6,6 +6,7 @@ import com.community.mapper.UserMapper;
 import com.community.service.IUserService;
 import com.community.util.CommonUtil;
 import com.community.util.MailClient;
+import com.community.vo.LoginTicket;
 import com.community.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,9 @@ import com.community.util.CommonStatus;
 
 @Service
 public class UserService extends ServiceImpl<UserMapper, User> implements IUserService {
+
+    @Autowired
+    private LoginTicketService loginTicketService;
 
     @Autowired
     private MailClient mailClient;
@@ -46,6 +50,8 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     public User selectUserById(int id) {
         return this.baseMapper.selectById(id);
     }
+
+
 
     @Override
     public User selectUserByUserName(String userName) {
@@ -116,6 +122,17 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
                 return CommonStatus.ACTIVATION_FAILURE;
             }
         }
+    }
+
+    /**
+     * 根据ticket获取User
+     * @param param
+     * @return
+     */
+    @Override
+    public User selectUserByParam(String param) {
+        LoginTicket loginTicket=loginTicketService.selectLoginTicketByTicket(param);
+        return this.baseMapper.selectById(loginTicket.getUserId());
     }
 
 

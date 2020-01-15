@@ -9,8 +9,6 @@ import com.community.vo.LoginTicket;
 import com.community.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.rmi.runtime.Log;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,5 +72,15 @@ public class LoginTicketService extends ServiceImpl<LoginTicketMapper, LoginTick
         LoginTicket loginTicket=this.selectOne(new EntityWrapper<LoginTicket>().eq("ticket",ticket));
         loginTicket.setStatus(1);
         this.update(loginTicket,new EntityWrapper<LoginTicket>().eq("ticket",ticket));
+    }
+
+    /**
+     * 根据ticket获取LT
+     * @param ticket
+     * @return
+     */
+    @Override
+    public LoginTicket selectLoginTicketByTicket(String ticket) {
+        return this.selectOne(new EntityWrapper<LoginTicket>().eq("ticket",ticket));
     }
 }

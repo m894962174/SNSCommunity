@@ -38,5 +38,10 @@ public interface IUserService extends IService<User> {
      */
     int activtion(int userId, String activtionCode);
 
-
+    /**
+     * 根据某参数获取User
+     * @param param
+     * @return
+     */
+    User selectUserByParam(String param);
 }
