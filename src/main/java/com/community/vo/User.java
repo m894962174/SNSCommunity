@@ -8,6 +8,11 @@ public class User {
     private String username;
     private String password;
     private String salt;
+
+    /**
+     * @Pattern(regexp = "^[a-zA-Z\\d]{1}[\\w\\.]*@[a-zA-Z\\d]+\\.[a-zA-Z\\u4e00-\\u9fa5]+$", message = "邮箱格式有误")
+     * 由于本项目整体使用Thymleaf进行交互，因此暂且不配置全局异常拦截
+     */
     private String email;
     private int type;
     private int status;

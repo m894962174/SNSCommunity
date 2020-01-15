@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import com.community.util.ActivationStatus;
+import com.community.util.CommonStatus;
 
 
 @Service
@@ -45,6 +45,13 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     @Override
     public User selectUserById(int id) {
         return this.baseMapper.selectById(id);
+    }
+
+    @Override
+    public User selectUserByUserName(String userName) {
+        User user=new User();
+        user.setUsername(userName);
+        return this.selectOne(new EntityWrapper<User>().eq("username",userName));
     }
 
     /**
@@ -97,15 +104,16 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     public int activtion(int userId, String activtionCode) {
         User user=this.selectUserById(userId);
         if(user==null){
-            return ActivationStatus.USER_NOTEXIST;
+            return CommonStatus.USER_NOTEXIST;
         }else {
             if(user.getStatus()==1){
-                return ActivationStatus.ACTIVATION_REPEAT;
+                return CommonStatus.ACTIVATION_REPEAT;
             }else if(user.getActivationCode().equals(activtionCode)){
-                this.update(user,new EntityWrapper<User>().eq("status",1));
-                return ActivationStatus.ACTIVATION_SUCCESS;
+                user.setStatus(1);
+                this.updateById(user);
+                return CommonStatus.ACTIVATION_SUCCESS;
             }else {
-                return ActivationStatus.ACTIVATION_FAILURE;
+                return CommonStatus.ACTIVATION_FAILURE;
             }
         }
     }

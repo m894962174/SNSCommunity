@@ -16,6 +16,13 @@ public interface IUserService extends IService<User> {
     User selectUserById(int id);
 
     /**
+     * 根据userName查询User
+     * @param userName
+     * @return
+     */
+    User selectUserByUserName(String userName);
+
+    /**
      * 注册新用户
      *
      * @param user
@@ -30,4 +37,6 @@ public interface IUserService extends IService<User> {
      * @return
      */
     int activtion(int userId, String activtionCode);
+
+
 }

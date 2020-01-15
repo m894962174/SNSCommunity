@@ -1,6 +1,6 @@
 package com.community.util;
 
-public interface ActivationStatus {
+public interface CommonStatus {
 
     /**
      * 激活成功
@@ -21,4 +21,14 @@ public interface ActivationStatus {
      * 用户不存在
      */
     static int USER_NOTEXIST=-1;
+
+    /**
+     * 勾选'记住我'时的凭证存活时间
+     */
+    int REMEMBER_EXPIRED_SECONDS=3600*24*10;
+
+    /**
+     * 未勾选'记住我'时的凭证存活时间
+     */
+    int DEFAULT_EXPIRED_SECONDS=3600*24;
 }
