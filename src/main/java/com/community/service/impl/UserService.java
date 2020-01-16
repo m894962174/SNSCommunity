@@ -135,5 +135,14 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         return this.baseMapper.selectById(loginTicket.getUserId());
     }
 
+    /**
+     * 修改HeaderUrl
+     * @param user
+     */
+    @Override
+    public void updateUserHeaderUrl(User user) {
+        this.updateById(user);
+    }
+
 
 }

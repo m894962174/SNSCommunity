@@ -44,4 +44,10 @@ public interface IUserService extends IService<User> {
      * @return
      */
     User selectUserByParam(String param);
+
+    /**
+     * 修改User
+     * @param user
+     */
+    void updateUserHeaderUrl(User user);
 }
