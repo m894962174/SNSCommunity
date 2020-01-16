@@ -1,5 +1,6 @@
 package com.community.controller;
 
+import com.community.annotation.CheckLogin;
 import com.community.service.impl.UserService;
 import com.community.util.CommonUtil;
 import com.community.util.UserThreadLocal;
@@ -47,6 +48,7 @@ public class UserController {
     private UserService userService;
 
 
+    @CheckLogin
     @RequestMapping(path = "/setting", method = RequestMethod.GET)
     public String getSettingPage() {
         return "/site/setting";
@@ -59,6 +61,7 @@ public class UserController {
      * @param multipartFile
      * @return
      */
+    @CheckLogin
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public String uploadFile(Model model, MultipartFile multipartFile) {
         if (multipartFile == null) {
@@ -119,6 +122,7 @@ public class UserController {
      * @param passWord
      * @return
      */
+    @CheckLogin
     @RequestMapping(value = "/changePassWord", method = RequestMethod.POST)
     public String changePassWord(Model model, String OldPassWord, String passWord, String checkPassWord) {
         Map<String, Object> map = userService.updatePassWord(OldPassWord, passWord, checkPassWord);
