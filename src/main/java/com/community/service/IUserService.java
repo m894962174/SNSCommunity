@@ -17,6 +17,7 @@ public interface IUserService extends IService<User> {
 
     /**
      * 根据userName查询User
+     *
      * @param userName
      * @return
      */
@@ -32,6 +33,7 @@ public interface IUserService extends IService<User> {
 
     /**
      * 激活账号
+     *
      * @param userId
      * @param activtionCode
      * @return
@@ -40,6 +42,7 @@ public interface IUserService extends IService<User> {
 
     /**
      * 根据某参数获取User
+     *
      * @param param
      * @return
      */
@@ -47,7 +50,16 @@ public interface IUserService extends IService<User> {
 
     /**
      * 修改User
+     *
      * @param user
      */
     void updateUserHeaderUrl(User user);
+
+    /**
+     * 修改密码
+     *
+     * @param OldPassWord
+     * @param passWord
+     */
+    Map<String, Object> updatePassWord(String OldPassWord, String passWord, String checkPassWord);
 }

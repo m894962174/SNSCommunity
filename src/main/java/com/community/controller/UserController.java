@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.Map;
 
 
 /**
@@ -101,12 +102,31 @@ public class UserController {
         response.setContentType("image/" + suffix);
         try (FileInputStream fis = new FileInputStream(new File(fileName));
              OutputStream outputStream = response.getOutputStream()) {
-            byte[] buffer=new byte[1024];
-            while (fis.read(buffer)!= -1){
+            byte[] buffer = new byte[1024];
+            while (fis.read(buffer) != -1) {
                 outputStream.write(buffer);
             }
         } catch (IOException e) {
             logger.error("读取头像失败: " + e.getMessage());
         }
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param model
+     * @param OldPassWord
+     * @param passWord
+     * @return
+     */
+    @RequestMapping(value = "/changePassWord", method = RequestMethod.POST)
+    public String changePassWord(Model model, String OldPassWord, String passWord, String checkPassWord) {
+        Map<String, Object> map = userService.updatePassWord(OldPassWord, passWord, checkPassWord);
+        if (map == null) {
+            return "redirect:/index";
+        }
+        model.addAttribute("errorMsg", map.get("errorMsg"));
+        model.addAttribute("checkMsg", map.get("checkMsg"));
+        return "/site/setting";
     }
 }
