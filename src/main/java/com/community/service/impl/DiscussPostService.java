@@ -4,10 +4,14 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.community.mapper.DiscussPostMapper;
 import com.community.service.IDiscussPostService;
+import com.community.util.SensitiveWordFilter;
 import com.community.vo.DiscussPost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
+
 import java.util.List;
 
 
@@ -15,6 +19,9 @@ import java.util.List;
 public class DiscussPostService extends ServiceImpl<DiscussPostMapper, DiscussPost> implements IDiscussPostService {
 
     private static final Logger log= LoggerFactory.getLogger(DiscussPostService.class);
+
+    @Autowired
+    SensitiveWordFilter sensitiveWordFilter;
 
     /**
      * 社区首页帖子展示
@@ -40,5 +47,20 @@ public class DiscussPostService extends ServiceImpl<DiscussPostMapper, DiscussPo
         }else{
             return this.baseMapper.selectCount(new EntityWrapper<DiscussPost>().eq("user_id",userId).ne("status",2));
         }
+    }
+
+    /**
+     * 发布新帖
+     * @param discussPost
+     */
+    @Override
+    public void add(DiscussPost discussPost) {
+        //转义可能存在的html标签
+        discussPost.setTitle(HtmlUtils.htmlEscape(discussPost.getTitle()));
+        discussPost.setContent(HtmlUtils.htmlEscape(discussPost.getContent()));
+        //敏感词过滤
+        discussPost.setTitle(sensitiveWordFilter.filter(discussPost.getTitle()));
+        discussPost.setContent(sensitiveWordFilter.filter(discussPost.getContent()));
+        this.insert(discussPost);
     }
 }

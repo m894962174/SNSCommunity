@@ -23,4 +23,10 @@ public interface IDiscussPostService extends IService<DiscussPost> {
      * @return
      */
     int getCount(int userId);
+
+    /**
+     * 添加帖子
+     * @param discussPost
+     */
+    void add(DiscussPost discussPost);
 }

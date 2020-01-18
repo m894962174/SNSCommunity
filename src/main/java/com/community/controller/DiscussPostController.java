@@ -1,6 +1,10 @@
 package com.community.controller;
+import com.alibaba.fastjson.JSONObject;
+import com.community.annotation.CheckLogin;
 import com.community.service.IDiscussPostService;
 import com.community.service.IUserService;
+import com.community.util.CommonUtil;
+import com.community.util.UserThreadLocal;
 import com.community.vo.DiscussPost;
 import com.community.vo.Page;
 import com.community.vo.User;
@@ -9,10 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.*;
 
 
 @Controller
@@ -46,5 +49,30 @@ public class DiscussPostController {
         return "/index";
     }
 
+    /**
+     * 发布帖子
+     * @param title
+     * @param content
+     * @return
+     */
+    @CheckLogin
+    @RequestMapping(value = "/addDiscussPost",method = RequestMethod.POST)
+    @ResponseBody
+    public String addDiscussPost(String title, String content){
+        User user= UserThreadLocal.getUser();
+        if (user == null) {
+            return CommonUtil.getJSONString(403, "你还没有登录哦!");
+        }
+        DiscussPost post = new DiscussPost();
+        post.setUserId(user.getId());
+        post.setTitle(title);
+        post.setContent(content);
+        post.setCreateTime(new Date());
+        post.setStatus(0);
+        post.setType(0);
+        post.setCommentCount(0);
+        discussPostService.add(post);
+        return CommonUtil.getJSONString(0, "发布成功!");
+    }
 
 }
