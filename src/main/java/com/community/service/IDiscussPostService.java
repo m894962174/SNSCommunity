@@ -29,4 +29,18 @@ public interface IDiscussPostService extends IService<DiscussPost> {
      * @param discussPost
      */
     void add(DiscussPost discussPost);
+
+    /**
+     * 根据Id查询DiscussPost
+     * @param discussPostId
+     * @return
+     */
+    DiscussPost selectDisCussPostById(int discussPostId);
+
+    /**
+     * 修改commentCount
+     * @param commentCount
+     * @param id
+     */
+    void update(int commentCount, int id);
 }

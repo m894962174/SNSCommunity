@@ -16,5 +16,10 @@ public interface DiscussPostMapper extends BaseMapper<DiscussPost> {
      */
     List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit);
 
-
+    /**
+     * 修改commentCount
+     * @param commentCount
+     * @param id
+     */
+    void updateCommentCount(int commentCount, int id);
 }

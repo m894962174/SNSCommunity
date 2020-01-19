@@ -63,4 +63,23 @@ public class DiscussPostService extends ServiceImpl<DiscussPostMapper, DiscussPo
         discussPost.setContent(sensitiveWordFilter.filter(discussPost.getContent()));
         this.insert(discussPost);
     }
+
+    /**
+     * 帖子详情
+     * @param discussPostId
+     * @return
+     */
+    @Override
+    public DiscussPost selectDisCussPostById(int discussPostId) {
+        return this.selectById(discussPostId);
+    }
+
+    /**
+     * 修改CommentCount
+     * @param
+     */
+    @Override
+    public void update(int commentCount, int id) {
+        this.baseMapper.updateCommentCount(commentCount, id);
+    }
 }
