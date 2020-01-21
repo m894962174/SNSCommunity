@@ -4,10 +4,16 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.community.mapper.MessageMapper;
 import com.community.service.IMessageService;
+import com.community.util.CommonUtil;
+import com.community.util.SensitiveWordFilter;
+import com.community.util.UserThreadLocal;
 import com.community.vo.Message;
+import com.community.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +28,9 @@ public class MessageService extends ServiceImpl<MessageMapper, Message> implemen
 
     @Autowired
     MessageMapper messageMapper;
+
+    @Autowired
+    SensitiveWordFilter sensitiveWordFilter;
 
     /**
      * 查询当前用户下的所有会话
@@ -77,4 +86,43 @@ public class MessageService extends ServiceImpl<MessageMapper, Message> implemen
         }
         return this.selectCount(new EntityWrapper<Message>().eq("to_id",userId).eq("status",0).ne("from_id",1));
     }
+
+    /**
+     * 插入一条新私信
+     * @param message
+     */
+    @Override
+    public void insertMessage(Message message) {
+        message.setContent(HtmlUtils.htmlEscape(message.getContent()));
+        message.setContent(sensitiveWordFilter.filter(message.getContent()));
+        this.insert(message);
+    }
+
+    /**
+     * 更改私信（已读/未读）状态
+     * @param ids
+     * @param status
+     * @return
+     */
+    public int updateStatus(List<Integer> ids, int status){
+        return this.baseMapper.updateStatus(ids, status);
+    }
+
+    /**
+     * 得到当前用户私信列表中未读消息的id集合
+     * @param letterList
+     * @return
+     */
+    public List<Integer> getUnReadLetterIds(List<Message> letterList) {
+        List<Integer> ids = new ArrayList<>();
+        if (letterList != null) {
+            for (Message message : letterList) {
+                if (UserThreadLocal.getUser().getId() == message.getToId() && message.getStatus() == 0) {
+                    ids.add(message.getId());
+                }
+            }
+        }
+        return ids;
+    }
+
 }

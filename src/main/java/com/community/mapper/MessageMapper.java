@@ -39,4 +39,12 @@ public interface MessageMapper extends BaseMapper<Message> {
      */
     List<Message> selectLetters(String conversationId, int offset, int limit);
 
+    /**
+     * 修改消息的状态
+     * @param ids
+     * @param status
+     * @return
+     */
+    int updateStatus(List<Integer> ids, int status);
+
 }

@@ -26,4 +26,10 @@ public interface IMessageService extends IService<Message> {
      * @return
      */
     int selectLetterUnreadCount(int userId, String conversationId);
+
+    /**
+     * 插入一条新私信
+     * @param message
+     */
+    void insertMessage(Message message);
 }

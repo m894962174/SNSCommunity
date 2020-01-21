@@ -57,8 +57,6 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
 
     @Override
     public User selectUserByUserName(String userName) {
-        User user = new User();
-        user.setUsername(userName);
         return this.selectOne(new EntityWrapper<User>().eq("username", userName));
     }
 
