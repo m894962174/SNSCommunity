@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.community.mapper.DiscussPostMapper;
 import com.community.service.IDiscussPostService;
-import com.community.util.SensitiveWordFilter;
+import com.community.controller.filter.SensitiveWordFilter;
 import com.community.vo.DiscussPost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

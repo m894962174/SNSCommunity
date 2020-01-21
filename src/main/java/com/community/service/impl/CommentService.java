@@ -6,7 +6,7 @@ import com.community.mapper.CommentMapper;
 import com.community.mapper.DiscussPostMapper;
 import com.community.service.ICommentService;
 import com.community.util.CommonStatus;
-import com.community.util.SensitiveWordFilter;
+import com.community.controller.filter.SensitiveWordFilter;
 import com.community.vo.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.community.util;
+package com.community.controller.filter;
 
 import org.apache.commons.lang3.CharUtils;
 import org.slf4j.Logger;
